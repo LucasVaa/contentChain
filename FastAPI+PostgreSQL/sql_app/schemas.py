@@ -58,6 +58,9 @@ class ContentObjectLocation(BaseModel):
     createdAt: datetime.datetime
     updatedAt: datetime.datetime
 
+    class Config:
+        orm_mode = True
+
 class ContentUseTransaction(BaseModel):
     cid: str
     uid: str
@@ -66,6 +69,8 @@ class ContentUseTransaction(BaseModel):
     createdAt: datetime.datetime
     updatedAt: datetime.datetime
     
+    class Config:
+        orm_mode = True
 
 class NodeInformation(BaseModel):
     nid: str
@@ -76,3 +81,6 @@ class NodeInformation(BaseModel):
     pid: str
     createdAt: datetime.datetime
     updatedAt: datetime.datetime
+
+    class Config:
+        orm_mode = True

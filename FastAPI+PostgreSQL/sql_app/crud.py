@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 import models, schemas
 
@@ -34,5 +35,8 @@ def db_create_nodeinformation(db: Session, nodeinformation: schemas.NodeInformat
     db.refresh(db_item)
     return db_item
 
-def get_user(db: Session, user_id: str):
-    return db.query(models.ContentUseTransaction).filter(models.ContentUseTransaction.cid == user_id).first()
+# 获取当前网络中的结点列表信息
+def get_node_list(db: Session):
+    statement  = select(models.NodeInformation)
+    result = db.execute(statement).scalars().all()
+    return result

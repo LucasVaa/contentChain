@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI, Depends, HTTPException
 import crud, schemas
 from database import SessionLocal, engine, Base
@@ -23,20 +24,20 @@ def get_db():
 
 
 # 新建用户
-@app.post("/users/")
-def create_user(item: schemas.ContentUseTransaction, db: Session = Depends(get_db)):
-    return crud.db_create_contentusetransaction(db=db, contentusetransaction=item)
+@app.post("/users/", response_model=schemas.NodeInformation)
+def create_user(item: schemas.NodeInformation, db: Session = Depends(get_db)):
+    return crud.db_create_nodeinformation(db=db, nodeinformation=item)
 
 
-# 通过id查询用户
-@app.get("/user/{user_id}")
-def read_user(user_id: str, db: Session = Depends(get_db)):
-    db_user = crud.get_user(db, user_id=user_id)
-    print(db_user)
-    print(type(db_user))
+# 获取当前网络中的结点列表信息
+@app.get("/get_node_list", response_model=List[schemas.NodeInformation])
+def get_node_list(db: Session = Depends(get_db)):
+    db_user = crud.get_node_list(db)
     if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Nids not found")
     return db_user
+
+
 
 
 if __name__ == '__main__':
