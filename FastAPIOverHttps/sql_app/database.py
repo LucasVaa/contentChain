@@ -1,3 +1,13 @@
+# -*- coding:UTF-8 -*-
+"""
+Created on 2021年7月20日
+
+@author: WuGS
+数据库配置相关
+"""
+import os
+import sys
+sys.path.append(os.pardir)
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker

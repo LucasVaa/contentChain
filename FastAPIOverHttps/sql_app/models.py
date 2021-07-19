@@ -1,6 +1,16 @@
+# -*- coding:UTF-8 -*-
+"""
+Created on 2021年7月20日
+
+@author: WuGS
+数据库模型表
+"""
+import os
+import sys
+sys.path.append(os.pardir)
 from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.sql.sqltypes import DateTime, Float
-from database import Base
+from sql_app.database import Base
 
 
 class ContentCatalogList(Base):

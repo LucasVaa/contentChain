@@ -1,35 +1,15 @@
+# -*- coding:UTF-8 -*-
+"""
+Created on 2021年7月20日
+
+@author: WuGS
+模型验证
+"""
+import os
+import sys
+sys.path.append(os.pardir)
 from pydantic import BaseModel
 import datetime
-
-
-class UserBase(BaseModel):
-    email: str
-
-
-class UserCreate(UserBase):
-    """
-    请求模型验证：
-    email:
-    password:
-    """
-    password: str
-
-
-class User(UserBase):
-    """
-    响应模型：
-    id:
-    email:
-    is_active
-    并且设置orm_mode与之兼容
-    """
-    id: int
-    is_active: bool
-    add: bool
-
-    class Config:
-        orm_mode = True
-
 
 class ContentCatalogList(BaseModel):
     cid: str
@@ -40,7 +20,7 @@ class ContentCatalogList(BaseModel):
     description: str
     publisher: str
     publishid: str
-    isencrypt: str
+    isencrypt: int
     size: float
     content_hash: str
     state: int
