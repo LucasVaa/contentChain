@@ -11,9 +11,13 @@ sys.path.append('../../')
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+import json
+import os
+from os.path import join, getsize
 from contentDb import schemas
 from contentDb.database import SessionLocal, engine, Base
 from contentDb.crud import crudAdmin
+from globalArgs import glo
 
 Base.metadata.create_all(bind=engine) #数据库初始化，如果没有库或者表，会自动创建
 
@@ -34,24 +38,29 @@ def get_db():
     finally:
         db.close()
 
+def getdirsize(dir):
+    size = 0
+    for root, dirs, files in os.walk(dir):
+        size += sum([getsize(join(root, name)) for name in files])
+    return size / 1024 / 1024
 
 # 添加新结点
-@router.post("/addNode/", response_model=schemas.NodeInformation)
+@router.post("/addNode", response_model=schemas.NodeInformation)
 async def add_node(item: schemas.NodeInformation, db: Session = Depends(get_db)):
     return crudAdmin.db_create_nodeinformation(db=db, nodeinformation=item)
 
 # 添加新内容
-@router.post("/addContent/", response_model=schemas.ContentCatalogList)
+@router.post("/addContent", response_model=schemas.ContentCatalogList)
 async def add_content(item: schemas.ContentCatalogList, db: Session = Depends(get_db)):
     return crudAdmin.db_create_contentcataloglist(db=db, contentcataloglist=item)
 
 # 添加新交易
-@router.post("/addTx/", response_model=schemas.ContentUseTransaction)
+@router.post("/addTx", response_model=schemas.ContentUseTransaction)
 async def add_tx(item: schemas.ContentUseTransaction, db: Session = Depends(get_db)):
     return crudAdmin.db_create_contentusetransaction(db=db, contentusetransaction=item)
 
 # 添加新内容存储
-@router.post("/addLocation/", response_model=schemas.ContentObjectLocation)
+@router.post("/addLocation", response_model=schemas.ContentObjectLocation)
 async def add_location(item: schemas.ContentObjectLocation, db: Session = Depends(get_db)):
     return crudAdmin.db_create_contentobjectlocation(db=db, contentobjectlocation=item)
 
@@ -87,42 +96,64 @@ async def get_tx_list(db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Tx not found")
     return db_user
 
-# 更改结点的类型,并广播给全网
-@router.post("/changeType/")
-async def change_type(nid: str, type: int, db: Session = Depends(get_db)):
-    return {"nid": nid, "type": type}
+# 更改结点的类型,并广播给全网 -- discard
+@router.post("/changeType")
+async def change_type(item: schemas.changeTypeRequest, db: Session = Depends(get_db)):
+    return {"nid": 'nid', "type": 'type'}
 
-# 根结点删除某一个结点,并广播给全网删除
-@router.delete("/deleteNode/")
+# 根结点删除某一个结点,并广播给全网删除 -- alter to pbft
+@router.delete("/deleteNode")
 async def delete_node(nid: str, db: Session = Depends(get_db)):
     return {"nid": nid}
 
-# 根结点删除某一个结点,并广播给全网删除
-@router.get("/getBlockList/")
+# 获取区块列表
+@router.get("/getBlockList")
 async def get_block_list(db: Session = Depends(get_db)):
-    return {"null": "null"}
+    parm = {
+        "blocks": [],
+        "totalNumber": "",
+        "storage": "",
+    }
+    try:
+        db = glo.get_value("leveldb")
+        height = int(db.Get("height".encode()))
+        for i in range(0, height):
+            block = json.loads(db.Get(str(i+1).encode()).decode())
+            parm["blocks"].append(block)
+            # parm[block['index']] = block
+    except KeyError:
+        print("暂无区块")
+    parm["totalNumber"] = len(parm["blocks"])
+    parm["storage"] = getdirsize("/home/contentchain/consensusStorage")
+    response = {
+        "resultCode": 0,
+        "data": parm
+    }
+    return parm
 
-# 获取结点信息
-@router.get("/getNodeInfo/")
+# 根据nid获取结点信息
+@router.get("/getNodeInfo")
 async def get_node_info(db: Session = Depends(get_db)):
+    nid = glo.get_value("ip")
+    
     return {"null": "null"}
 
 # 查看某一结点发布的内容目录列表
-@router.get("/getNodeReleaseList/")
+@router.get("/getNodeReleaseList")
 async def get_node_release_list(nid: str, db: Session = Depends(get_db)):
     return {"null": "null"}
 
 # 查看某一结点存储的内容目录列表
-@router.get("/getNodeStorageList/")
+@router.get("/getNodeStorageList")
 async def get_node_storage_list(nid: str, db: Session = Depends(get_db)):
     return {"null": "null"}
 
 # 获取某一结点发起的交易
-@router.get("/getNodeTransactionList/")
+@router.get("/getNodeTransactionList")
 async def get_node_transaction_list(nid: str, db: Session = Depends(get_db)):
     return {"null": "null"}
 
 # 获取使用权和所属权交易
-@router.get("/getTransactionList/")
+@router.get("/getTransactionList")
 async def get_transaction_list(db: Session = Depends(get_db)):
     return {"null": "null"}

@@ -64,3 +64,10 @@ class NodeInformation(BaseModel):
 
     class Config:
         orm_mode = True
+
+class changeTypeRequest(BaseModel):
+    nid: str
+    type: int
+
+    class Config:
+        orm_mode = True

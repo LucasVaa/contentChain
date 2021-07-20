@@ -68,3 +68,5 @@ def get_node_storage_list(db: Session):
     statement  = select(models.ContentObjectLocation)
     result = db.execute(statement).scalars().all()
     return result
+
+# 根据nid获取结点信息

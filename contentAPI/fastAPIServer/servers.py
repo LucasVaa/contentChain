@@ -22,7 +22,7 @@ def run_node():
     """
     This function to run node uvicorn server.
     """
-    uvicorn.run(app="main:app_node", port=8001, reload=True)
+    uvicorn.run(app="main:app_node", port=8002, reload=True)
 
 
 def start(function):
