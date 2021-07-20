@@ -3,7 +3,7 @@
 Created on 2021年7月20日
 
 @author: WuGS
-数据库操作相关
+管理界面相关数据库操作
 """
 import os
 import sys

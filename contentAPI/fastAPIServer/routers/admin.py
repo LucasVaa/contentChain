@@ -3,11 +3,11 @@
 Created on 2021年7月20日
 
 @author: WuGS
-主文件
+管理界面接口
 """
 import os
 import sys
-sys.path.append('/home/lucas/Documents/content-chain/')
+sys.path.append('../../')
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
