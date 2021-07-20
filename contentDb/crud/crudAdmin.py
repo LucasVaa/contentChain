@@ -10,7 +10,7 @@ import sys
 sys.path.append(os.pardir)
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from sql_app import models, schemas
+from contentDb import models, schemas
 
 
 # 添加内容目录

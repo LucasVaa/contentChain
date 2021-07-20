@@ -10,7 +10,7 @@ import sys
 sys.path.append(os.pardir)
 from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.sql.sqltypes import DateTime, Float
-from sql_app.database import Base
+from contentDb.database import Base
 
 
 class ContentCatalogList(Base):
