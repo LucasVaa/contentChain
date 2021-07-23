@@ -77,11 +77,15 @@ async def delete_node(nid: str, db: Session = Depends(get_db)):
 # 用户获取链接结点列表
 @router.get("/getConnectionNodeList")
 async def get_connection_node_list(db: Session = Depends(get_db)):
-    node_list = []
-    nodes = crudAdmin.get_node_list(db)
-    for node in nodes:
-        node_list.append(node.nid)
-    return node_list
+    try:
+        node_list = []
+        nodes = crudAdmin.get_node_list(db)
+        for node in nodes:
+            node_list.append(node.nid)
+        return node_list
+    except:
+        print("数据插入出错")
+        return [json.dumps({"resultCode": -1, "uid": uid, "name": name, "message": "数据库出错"}).encode("utf-8")]
 
 # 用户获取内容
 @router.get("/getContent")
