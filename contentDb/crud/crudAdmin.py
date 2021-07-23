@@ -3,12 +3,12 @@
 Created on 2021年7月20日
 
 @author: WuGS
-管理界面相关数据库操作
+应用相关数据库操作
 """
 import os
 import sys
 sys.path.append(os.pardir)
-from sqlalchemy import select
+from sqlalchemy import select, or_
 from sqlalchemy.orm import Session
 from contentDb import models, schemas
 
@@ -70,3 +70,18 @@ def get_node_storage_list(db: Session):
     return result
 
 # 根据nid获取结点信息
+def get_node(db: Session, nid: str):
+    statement = select(models.NodeInformation).filter_by(nid=nid)
+    result = db.execute(statement).scalars().all()
+    return result
+
+# 根据cid获取内容信息
+def get_content(db: Session, cid: str):
+    statement = select(models.ContentCatalogList).filter_by(cid=cid)
+    result = db.execute(statement).scalars().first()
+    return result
+
+# 根据nid从数据库中获取cid
+def get_cid_by_nid(db: Session, nid: str):
+    result = db.query(models.ContentObjectLocation).filter(or_(models.ContentObjectLocation.nid1==nid,models.ContentObjectLocation.nid2==nid,models.ContentObjectLocation.nid3==nid)).all()
+    return result

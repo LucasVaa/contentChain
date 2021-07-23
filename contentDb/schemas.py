@@ -71,3 +71,27 @@ class changeTypeRequest(BaseModel):
 
     class Config:
         orm_mode = True
+
+class ContentMeta(BaseModel):
+    uid: str
+    pid: str
+    author: str
+    title: str
+    description: str
+    publisher: str
+    publishid: str
+    isencrypt: int
+    size: float
+    content_hash: str
+    createdAt: datetime.datetime
+
+    class Config:
+        orm_mode = True
+
+class updateLocationRequest(BaseModel):
+    cid: str
+    nid_previous: str
+    nid_current: str
+
+    class Config:
+        orm_mode = True
