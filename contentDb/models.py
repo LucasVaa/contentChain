@@ -41,7 +41,8 @@ class ContentObjectLocation(Base):
 
 class ContentUseTransaction(Base):
     __tablename__ = "contentusetransaction"
-    cid = Column(String(255), primary_key=True, index=True, nullable=False)
+    id = Column(Integer, primary_key = True, autoincrement = True)
+    cid = Column(String(255), index=True, nullable=False)
     uid = Column(String(255), default=None)
     value = Column(Float, default=None)
     transactionHash = Column(String(255), default=None)
