@@ -10,6 +10,7 @@ import sys
 sys.path.append(os.pardir)
 from pydantic import BaseModel
 import datetime
+from typing import List
 
 class ContentCatalogList(BaseModel):
     cid: str
@@ -30,6 +31,11 @@ class ContentCatalogList(BaseModel):
     class Config:
         orm_mode = True
 
+class ContentCatalogListResponse(BaseModel):
+    resultCode: int
+    msg: str
+    data: List[ContentCatalogList]
+
 class ContentObjectLocation(BaseModel):
     cid: str
     nid1: str
@@ -41,6 +47,11 @@ class ContentObjectLocation(BaseModel):
     class Config:
         orm_mode = True
 
+class ContentObjectLocationResponse(BaseModel):
+    resultCode: int
+    msg: str
+    data: List[ContentObjectLocation]
+
 class ContentUseTransaction(BaseModel):
     cid: str
     uid: str
@@ -51,6 +62,11 @@ class ContentUseTransaction(BaseModel):
     
     class Config:
         orm_mode = True
+
+class ContentUseTransactionResponse(BaseModel):
+    resultCode: int
+    msg: str
+    data: List[ContentUseTransaction]
 
 class NodeInformation(BaseModel):
     nid: str
@@ -64,6 +80,11 @@ class NodeInformation(BaseModel):
 
     class Config:
         orm_mode = True
+
+class NodeInformationResponse(BaseModel):
+    resultCode: int
+    msg: str
+    data: List[NodeInformation]
 
 class changeTypeRequest(BaseModel):
     nid: str
@@ -95,3 +116,4 @@ class updateLocationRequest(BaseModel):
 
     class Config:
         orm_mode = True
+
