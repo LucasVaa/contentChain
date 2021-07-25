@@ -12,6 +12,12 @@ def run_admin():
     """
     uvicorn.run(app="main:app_admin", port=8000, reload=True)
 
+def run_ca_admin(): 
+    """
+    This function to run admin uvicorn server.
+    """
+    uvicorn.run(app="main:app_ca_admin", port=8000, reload=True)
+
 def run_app(): 
     """
     This function to run app uvicorn server.
@@ -23,6 +29,12 @@ def run_node():
     This function to run node uvicorn server.
     """
     uvicorn.run(app="main:app_node", port=5551, reload=True)
+
+def run_ca_node(): 
+    """
+    This function to run node uvicorn server.
+    """
+    uvicorn.run(app="main:app_ca_node", port=5551, reload=True)
 
 
 def start(function):
@@ -50,9 +62,11 @@ def stop():
 
 if __name__ == "__main__":
     # to start the server call start function.
-    start(run_admin)
+    # start(run_admin)
+    start(run_ca_admin)
     # start(run_app)
-    start(run_node)
+    # start(run_node)
+    start(run_ca_node)
     # run some codes ....
     # to stop the server call stop function.
     stop()
