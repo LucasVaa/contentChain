@@ -119,6 +119,7 @@ async def content_use_trade(cid: str, uid: str, value: float, db: Session = Depe
             "updatedAt": updatedAt
         }
         item = schemas.ContentUseTransaction(**item)
+        crudAdmin.db_create_contentusetransaction(db=db, contentusetransaction=item)
     except:
         return {'resultCode': 1,'msg': '内容使用权交易失败'}
     # return crudAdmin.db_create_contentusetransaction(db=db, contentusetransaction=item)

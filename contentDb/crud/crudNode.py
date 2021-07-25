@@ -48,3 +48,8 @@ def modify_node_capacity(db: Session, nid: str, capacity: float):
 def update_location(db: Session, cid: str, nid: str, nid_current: str):
     db.query(models.ContentObjectLocation).filter(models.ContentObjectLocation.cid == cid).update({nid: nid_current})
     db.commit()
+
+# 获取内容许可
+def get_content_license(db: Session, cid: str, uid: str):
+    result = db.query(models.ContentUseTransaction).filter(and_(models.ContentUseTransaction.cid==cid, models.ContentUseTransaction.uid==uid)).first()
+    return result

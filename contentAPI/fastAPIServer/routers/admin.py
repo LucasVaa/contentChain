@@ -91,8 +91,8 @@ async def get_node_list(db: Session = Depends(get_db)):
     try:
         db_user = crudAdmin.get_node_list(db)
     except:
-        return {'resultCode': 1,'msg': '结点列表信息失败','data': []}
-    return {'resultCode': 0,'msg': '结点列表信息成功','data': db_user}
+        return {'resultCode': 1,'msg': '获取结点列表信息失败','data': []}
+    return {'resultCode': 0,'msg': '获取结点列表信息成功','data': db_user}
 
 # 获取内容列表信息
 @router.get("/getContentList", response_model=schemas.ContentCatalogListResponse)
